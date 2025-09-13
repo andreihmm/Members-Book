@@ -22,7 +22,8 @@ O **Business Match Cards** nasceu em um hackathon com o objetivo de facilitar co
   - Medalhas (Ouro, Platina, Diamante)  
   - Pontos por indicações fornecidas/recebidas  
 - 💬 **Caixa de mensagens interna** (versão simplificada para o MVP)  
-- 📊 **Dashboard de resultados** (negócios fechados, valor fomentado, progresso para próximo nível)  
+- 📋 Criação de lista em ordem alfabética interna dos membros
+- 📝💬 Formulário de cadastro
 
 ---
 
