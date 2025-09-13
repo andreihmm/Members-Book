@@ -86,8 +86,8 @@
             text-decoration: underline;
         }
 
-        /* Imagem de splash */
-        .splash-section {
+        /* Imagem de logo */
+        .logo-section {
             flex: 1;
             background: #f9f9f9;
             display: flex;
@@ -96,7 +96,7 @@
             padding: 2rem;
         }
 
-        .splash-section img {
+        .logo-section img {
             max-width: 100%;
             height: auto;
         }
@@ -109,7 +109,7 @@
             }
 
             .login-section,
-            .splash-section {
+            .logo-section {
                 flex: 1;
             }
         }
@@ -131,8 +131,8 @@
             </div>
         </div>
 
-        <!-- Coluna da direita: imagem splash -->
-        <div class="splash-section">
+        <!-- Coluna da direita: imagem logo -->
+        <div class="logo-section">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo do Projeto">
         </div>
     </div>

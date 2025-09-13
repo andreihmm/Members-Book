@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <title>Cadastro - Multi Etapas</title>
     <style>
-        /* Reset simples */
         * {
             margin: 0;
             padding: 0;
@@ -16,35 +15,40 @@
 
         body {
             display: flex;
-            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            background: #0A192F;
+            padding: 1rem;
+            flex-direction: column;
+            justify-content: space-evenly;
         }
 
         .register-container {
-            background: white;
             padding: 2rem;
             border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .register-container img {
-            width: 100px;
-            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 500px;
         }
 
         h1 {
-            margin-bottom: 1.5rem;
-            color: #333;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            font-size: 1.5rem;
+            text-align: center;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 0.8rem;
             margin-bottom: 1rem;
@@ -54,53 +58,148 @@
         }
 
         button {
-            width: 100%;
-            padding: 0.8rem;
-            background: #4e54c8;
+            padding: 0.8rem 1.5rem;
+            background: #D4AF37;
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             transition: background 0.3s;
+            margin-top: 0.5rem;
         }
 
         button:hover {
             background: #3b3fa7;
         }
 
-        .login-link {
-            margin-top: 1rem;
-            font-size: 0.9rem;
+        .buttons {
+            display: flex;
+            justify-content: space-between;
         }
 
-        .login-link a {
-            color: #4e54c8;
-            text-decoration: none;
-            font-weight: bold;
+        .progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
 
-        .login-link a:hover {
-            text-decoration: underline;
+        .progress span {
+            width: 12px;
+            height: 12px;
+            background: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .progress .active {
+            background: #4e54c8;
+        }
+
+        .logo-top {
+            width: 150px;
+            /* tamanho da logo superior */
+        }
+
+        .logo-bottom {
+            width: 120px;
+            /* tamanho da logo inferior */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
 <body>
+    <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
+
     <div class="register-container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo do Projeto">
         <h1>Cadastro</h1>
-        <form method="POST" action="/register">
-            <input type="text" name="name" placeholder="Nome completo" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Senha" required>
-            <input type="password" name="confirm_password" placeholder="Confirme a senha" required>
-            <button type="submit">Cadastrar</button>
+        <form method="POST" action="/register" enctype="multipart/form-data">
+
+            <!-- Indicador de progresso -->
+            <div class="progress">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+
+            <!-- Etapa 1 -->
+            <div class="step active">
+                <input type="text" name="name" placeholder="Nome completo" required>
+                <input type="text" name="email" placeholder="E-mail" required>
+                <input type="number" name="ano_nascimento" placeholder="Ano de Nascimento" required>
+                <div class="buttons">
+                    <button type="button" onclick="nextStep()">Próximo</button>
+                </div>
+            </div>
+
+            <!-- Etapa 2 -->
+            <div class="step">
+                <input type="text" name="empresa" placeholder="Empresa" required>
+                <label>Classe:</label>
+                <select name="classe" required>
+                    <option value="">Selecione</option>
+                    <option value="socio">Sócio</option>
+                    <option value="infinity">Infinity</option>
+                    <option value="membro">Membro</option>
+                </select> <input type="text" name="segmento" placeholder="Segmento" required>
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Voltar</button>
+                    <button type="button" onclick="nextStep()">Próximo</button>
+                </div>
+            </div>
+
+            <!-- Etapa 4 -->
+            <div class="step">
+                <input type="text" name="cargo" placeholder="Cargo" required>
+                <input type="text" name="tempo_atuacao" placeholder="Tempo de atuação" required>
+                <textarea name="principais_resultados" placeholder="Principais resultados" rows="3" required></textarea>
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Voltar</button>
+                    <button type="submit">Finalizar</button>
+                </div>
+            </div>
         </form>
-        <div class="login-link">
-            <p>Já tem uma conta? <a href="/login">Entrar</a></p>
-        </div>
     </div>
+
+    <img class="logo-bottom" src="{{ url_for('static', filename='logo_enjoy.png') }}" alt="Enjoy">
+
+    <script>
+        let currentStep = 0;
+        const steps = document.querySelectorAll(".step");
+        const dots = document.querySelectorAll(".progress .dot");
+
+        function showStep(n) {
+            steps.forEach((step, i) => step.classList.toggle("active", i === n));
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === n));
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+    </script>
 </body>
 
 </html>

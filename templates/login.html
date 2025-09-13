@@ -18,23 +18,31 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            background: #0A192F;
+            justify-content: space-evenly;
+        }
+
+        .logo-top {
+            width: 150px;
+            max-width: 200px;
+            margin: 1rem 0;
+            /* tamanho da logo superior */
         }
 
         .login-container {
-            background: white;
             padding: 2rem;
             border-radius: 12px;
             width: 90%;
             max-width: 400px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
         .login-container img {
             width: 100px;
             margin-bottom: 1rem;
+            width: 90%;
         }
 
         h1 {
@@ -55,7 +63,7 @@
         button {
             width: 100%;
             padding: 0.8rem;
-            background: #4e54c8;
+            background: #D4AF37;
             color: white;
             border: none;
             border-radius: 8px;
@@ -74,7 +82,19 @@
         }
 
         .register-link a {
-            color: #4e54c8;
+            color: #E5E5E5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        .visualizador-link {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .visualizador-link a {
+            color: #E5E5E5;
             text-decoration: none;
             font-weight: bold;
         }
@@ -82,22 +102,33 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+
+        .logo-bottom {
+            width: 120px;
+            /* tamanho da logo inferior */
+        }
     </style>
 </head>
 
 <body>
+    <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
+
     <div class="login-container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo do Projeto">
-        <h1>Login</h1>
+        <img src="{{ url_for('static', filename='logo_members_book.png') }}" alt="Logo do Projeto">
         <form method="POST" action="/login">
             <input type="text" name="username" placeholder="Usuário ou Email" required>
             <input type="password" name="password" placeholder="Senha" required>
             <button type="submit">Entrar</button>
         </form>
         <div class="register-link">
-            <p>Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+            <a href="/register">Criar conta</a>
+        </div>
+        <div class="visualizador-link">
+            <a href="/home">Sou visualizador</a>
         </div>
     </div>
+    <img class="logo-bottom" src="{{ url_for('static', filename='logo_enjoy.png') }}" alt="Enjoy">
+
 </body>
 
 </html>

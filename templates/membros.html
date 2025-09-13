@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Membros</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            padding: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* Container dos filtros */
+        .filter-container {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-container label {
+            display: block;
+            margin: 0.5rem 0 0.2rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        select,
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #4e54c8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #3b3fa7;
+        }
+
+        /* Cards dos membros */
+        .member-card {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .member-card h2 {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+            color: #222;
+        }
+
+        .member-card p {
+            margin: 0.3rem 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Layout para telas maiores */
+        @media (min-width: 768px) {
+            .filter-container {
+                display: flex;
+                align-items: flex-end;
+                gap: 1rem;
+            }
+
+            .filter-container label {
+                margin: 0;
+            }
+
+            .filter-container select {
+                flex: 1;
+            }
+
+            .filter-container button {
+                flex: 0.5;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Buscar Membros</h1>
+
+    <!-- Filtros -->
+    <div class="filter-container">
+        <div class="filter-item">
+            <label for="classe">Classe:</label>
+            <select id="classe" name="classe">
+                <option value="todos">Todos</option>
+                <option value="Platinum">Platinum</option>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+            </select>
+        </div>
+
+        <div class="filter-item">
+            <label for="segmento">Segmento:</label>
+            <select id="segmento" name="segmento">
+                <option value="todos">Todos</option>
+                <option value="Tecnologia">Tecnologia</option>
+                <option value="Saúde">Saúde</option>
+                <option value="Educação">Educação</option>
+            </select>
+        </div>
+
+        <button type="button">Filtrar</button>
+    </div>
+
+    <!-- Lista de membros (mockup visual) -->
+    <div class="member-card">
+        <h2>Maria Souza</h2>
+        <p><strong>Empresa:</strong> TechCorp</p>
+        <p><strong>Classe:</strong> Platinum</p>
+        <p><strong>Segmento:</strong> Tecnologia</p>
+    </div>
+
+    <div class="member-card">
+        <h2>João Silva</h2>
+        <p><strong>Empresa:</strong> Vida Saúde</p>
+        <p><strong>Classe:</strong> Gold</p>
+        <p><strong>Segmento:</strong> Saúde</p>
+    </div>
+</body>
+
+</html>
