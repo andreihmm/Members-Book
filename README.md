@@ -27,12 +27,12 @@ O **Business Match Cards** nasceu em um hackathon com o objetivo de facilitar co
 ---
 
 ## 🛠️ Tecnologias Utilizadas  
-- **Frontend**: React + TailwindCSS  
-- **Backend**: Node.js (Express) / Supabase (ou Appwrite/Nhost)  
-- **Banco de Dados**: PostgreSQL  
-- **IA**: OpenAI API (para bios e sugestões)  
-- **Autenticação**: Supabase Auth  
-- **Deploy**: Vercel / Netlify  
+- **Frontend**: 
+- **Backend**: 
+- **Banco de Dados**: 
+- **IA**:  
+- **Autenticação**:  
+- **Deploy**: 
 
 ---
 
