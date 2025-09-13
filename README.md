@@ -1,4 +1,4 @@
-# 📇 Business Match Cards  
+# 📇 Members Book
 
 > Plataforma gamificada que conecta empresários de diferentes ramos por meio de **cartas colecionáveis**, **IA para geração de bio**, **gamificação por indicações e negócios fechados** e uma **caixa de mensagens interna**.  
 
