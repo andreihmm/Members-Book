@@ -4,11 +4,9 @@
 <style>
     .content {
         padding: 20px;
-
     }
 
     /* Estilos da barra de busca */
-
     .logo-top {
         width: 150px;
         /* tamanho da logo superior */
@@ -103,6 +101,7 @@
         display: flex;
         flex-direction: column;
         gap: 15px;
+        width: 95%;
     }
 
     .user-card {
@@ -110,9 +109,25 @@
         padding: 15px;
         border-radius: 8px;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        /* Alinha no topo para a descrição */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s;
+        cursor: pointer;
+        /* Adiciona o cursor de clique */
+        transition: all 0.3s ease-in-out;
+        overflow: hidden;
+        position: relative;
+        height: 100px;
+        /* Altura padrão do card */
+    }
+
+    .user-card.expanded {
+        height: auto;
+        /* Expande a altura */
+        max-height: 150px;
+        /* Uma altura máxima para evitar quebra de layout */
+        padding-bottom: 70px;
+        /* Adiciona espaço para o botão */
     }
 
     .user-card:hover {
@@ -143,6 +158,45 @@
         font-size: 0.9em;
         color: #c9d1d9;
         margin-top: 5px;
+        line-height: 1.4;
+        text-overflow: ellipsis;
+        /* Limita a descrição a 2 linhas */
+        -webkit-box-orient: vertical;
+        display: none;
+        visibility: visible;
+        max-height: 4em;
+        /* Define uma altura máxima para o texto */
+        overflow: hidden;
+        /* Importante para o script funcionar */
+    }
+
+    .user-card.expanded .card-description {
+        display: block;
+        /* Mostra o texto completo quando expandido */
+        overflow-y: auto;
+        /* <--- Adiciona barra de rolagem vertical se necessário */
+
+    }
+
+    .profile-button {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background-color: #e2b349;
+        color: black;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        opacity: 0;
+        /* Escondido por padrão */
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .user-card.expanded .profile-button {
+        opacity: 1;
+        /* Mostra o botão quando expandido */
     }
 
     .no-results {
@@ -151,8 +205,6 @@
         margin-top: 40px;
     }
 </style>
-
-
 {% endblock %}
 
 {% block title %}Busca{% endblock %}
@@ -182,14 +234,34 @@
 <main class="cards-list">
     {% for usuario in usuarios %}
     <div class="user-card">
-        <img src="{{ usuario.foto_url }}" alt="Foto de Perfil de {{ usuario.nome }}" class="card-photo">
+        <img src="{{ usuario.url_imagem }}" alt="Foto de Perfil de {{ usuario.nome }}" class="card-photo">
         <div class="card-info">
             <span class="card-name">{{ usuario.nome }}</span>
+            <span class="card-empresa">{{ usuario.empresa }}</span>
             <span class="card-description">{{ usuario.descricao }}</span>
         </div>
+        <a href="{{ url_for('perfil', user_id=usuario._id) }}" class="profile-button">Ver Perfil</a>
     </div>
     {% else %}
     <p class="no-results">Nenhum resultado encontrado.</p>
     {% endfor %}
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cards = document.querySelectorAll('.user-card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function (event) {
+                // Impede que o clique no botão ative a expansão do card
+                if (event.target.closest('.profile-button')) {
+                    return;
+                }
+
+                // Alterna a classe 'expanded' no card clicado
+                this.classList.toggle('expanded');
+            });
+        });
+    });
+</script>
 {% endblock %}

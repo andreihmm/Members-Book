@@ -1,0 +1,26 @@
+{% extends 'perfil_base.html' %}
+
+{% block title %}Perfil de Sócio - {{ usuario.nome }}{% endblock %}
+
+{% block main_content %}
+<div class="profile-header">
+    <img src="{{ usuario.url_imagem }}" alt="Foto de {{ usuario.nome }}" class="profile-photo">
+    <h1 class="profile-name">{{ usuario.nome }}</h1>
+    <span class="badge badge-socio">Sócio</span>
+</div>
+
+<p class="profile-description">{{ usuario.diga_mais_formatted }}</p>
+
+<div class="info-section">
+    <h2>Informações Profissionais</h2>
+    <ul class="info-list">
+        {% if usuario.email %}<li><strong>Email:</strong> {{ usuario.email }}</li>{% endif %}
+        {% if usuario.empresa %}<li><strong>Empresa:</strong> {{ usuario.empresa }}</li>{% endif %}
+        {% if usuario.cargo %}<li><strong>Cargo:</strong> {{ usuario.cargo }}</li>{% endif %}
+        {% if usuario.segmento %}<li><strong>Segmento:</strong> {{ usuario.segmento }}</li>{% endif %}
+        {% if usuario.classe %}<li><strong>Classe:</strong> {{ usuario.classe | capitalize }}</li>{% endif %}
+        {% if usuario.data_entrada %}<li><strong>Desde:</strong> {{ usuario.data_entrada.strftime('%d/%m/%Y') }}</li>{%
+        endif %}
+    </ul>
+</div>
+{% endblock %}

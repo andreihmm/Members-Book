@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Perfil{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1a1e24;
+            color: #f0f6fc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo-top {
+            width: 150px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .profile-container {
+            padding: 30px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e2b349;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 2.5em;
+            color: #e2b349;
+            margin: 0;
+        }
+
+        .profile-description {
+            font-size: 1.1em;
+            color: #c9d1d9;
+            line-height: 1.6;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .info-section {
+            background-color: #1a1e24;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .info-section h2 {
+            color: #e2b349;
+            font-size: 1.5em;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-list li {
+            color: #c9d1d9;
+            padding: 10px 0;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list strong {
+            color: #f0f6fc;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #30363d;
+            color: #f0f6fc;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #444c56;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-socio {
+            background-color: #e2b349;
+            color: black;
+        }
+
+        .badge-infinity {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .badge-membro {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
+    </header>
+    <div class="profile-container">
+        {% block main_content %}
+        {% endblock %}
+    </div>
+    <a href="{{ url_for('busca') }}" class="back-button">← Voltar para a busca</a>
+</body>
+
+</html>

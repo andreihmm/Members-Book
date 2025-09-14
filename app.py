@@ -2,6 +2,9 @@ import os
 from flask import Flask, render_template, request, redirect, url_for
 from groq import Groq
 from dotenv import load_dotenv
+from pymongo import MongoClient
+import datetime
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
@@ -40,14 +43,43 @@ chats_mock = [
 ]
 
 load_dotenv()
-GROQ_FORMATAR = os.getenv('GROQ_ENJOY')
-client = Groq(api_key=GROQ_FORMATAR)
+GROQ_ENJOY = os.getenv('GROQ_ENJOY')
+groq_client = Groq(api_key=GROQ_ENJOY)
+
+MONGO_ENJOY = os.environ.get("MONGO_URI")
+mongo_client = MongoClient(MONGO_ENJOY)
+
+if not MONGO_ENJOY:
+    mongo_uri = "mongodb://localhost:27017/"
+
+db = mongo_client['Enjoy']
+
+##################################################
+
+# a partir do banco você define as tabelas e opera a partir dessas variáveis
+segmentos = db['Segmentos']
+classes = db['Classes']
+usuarios = db['Usuarios']
+usuarios_collection = db['Usuarios']
+
+
+##################################################
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        diga_mais_raw = request.form.get('diga_mais')
+        # 1. Pega todos os dados do formulário
         nome = request.form.get('nome')
+        email = request.form.get('email')
+        data_nascimento_str = request.form.get('data_nascimento')
+        empresa = request.form.get('empresa')
+        classe = request.form.get('classe')
+        segmento = request.form.get('segmento')
+        cargo = request.form.get('cargo')
+        data_entrada_str = request.form.get('data_entrada')
+        diga_mais_raw = request.form.get('diga_mais')
         
         diga_mais_formatted = "" # Inicializa a variável
 
@@ -62,7 +94,7 @@ def register():
         )
         if diga_mais_raw:
             try:
-                chat_completion = client.chat.completions.create(
+                chat_completion = groq_client.chat.completions.create(
                     messages=[
                         {
                             "role": "system",
@@ -83,6 +115,40 @@ def register():
                 print(f"Erro ao chamar a API Groq: {e}")
                 diga_mais_formatted = diga_mais_raw
         
+
+                # Converte a data de entrada para o formato correto
+        data_entrada = None
+        if data_entrada_str:
+            data_entrada = datetime.datetime.strptime(data_entrada_str, '%Y-%m-%d')
+        
+        data_nascimento = None
+        if data_nascimento_str:
+            data_nascimento = datetime.datetime.strptime(data_nascimento_str, '%Y-%m-%d')
+            
+        documento_usuario = {
+            "nome": nome,
+            "email": email,
+            "data_nascimento": data_nascimento,
+            "empresa": empresa,
+            "classe": classe,
+            "segmento": segmento,
+            "cargo": cargo,
+            "data_entrada": data_entrada,
+            "descricao": diga_mais_formatted,  # Salva o texto formatado
+        }
+        
+        # 4. Insere o documento no MongoDB
+        try:
+            usuarios_collection.insert_one(documento_usuario)
+            print("Documento inserido no MongoDB com sucesso!")
+            
+            # Opcional: Redireciona para a página de sucesso
+            return "Registro finalizado com sucesso! Dados salvos no banco de dados."
+            
+        except Exception as e:
+            print(f"Erro ao salvar no MongoDB: {e}")
+            return "Ocorreu um erro ao salvar os dados. Tente novamente mais tarde."
+
         # --- DEBUG AQUI! ---
         # Imprime o texto original e o texto formatado no console do terminal
         print("\n--- INFORMAÇÕES DO FORMULÁRIO ---")
@@ -95,6 +161,7 @@ def register():
         # A sua lógica de salvar no banco de dados ficaria aqui
 
         return f"Registro em modo de debug. Verifique o console do terminal para ver a mensagem formatada."
+
 
     return render_template('register.html')
 
@@ -116,9 +183,20 @@ def splash():
 def manifesto():
     return render_template('manifesto.html')
 
+
 @app.route('/busca')
 def busca():
-    return render_template('busca.html')
+    try:
+        # Busca os 10 usuários mais recentes, ordenando pela data de registro em ordem decrescente
+        # O .find() retorna um cursor, que precisa ser convertido para uma lista
+        usuarios = list(usuarios_collection.find().sort("data_registro", -1).limit(10))
+        
+        # Envia a lista de usuários para o template busca.html
+        return render_template('busca.html', usuarios=usuarios)
+    
+    except Exception as e:
+        print(f"Erro ao buscar usuários: {e}")
+        return "Erro ao carregar a página de busca."
 
 chats_mock = [
     {
@@ -179,6 +257,40 @@ def membros():
 @app.route('/membro')
 def membro():
     return render_template('membro.html')
+
+# --- Rota para o Perfil do Usuário ---
+@app.route('/perfil/<user_id>')
+def perfil(user_id):
+    try:
+        user_object_id = ObjectId(user_id)
+        usuario = usuarios_collection.find_one({"_id": user_object_id})
+        
+        if not usuario:
+            return "Usuário não encontrado.", 404
+        
+        # Agora, determine qual template renderizar com base na classe
+        # Supondo que o documento do usuário tenha um campo `classe_id`
+        classe_id = usuario.get('classe')
+        
+        if classe_id == ObjectId("68c5d5307121e8f8f57359c8"):
+            # Renderiza o perfil para Sócio
+            return render_template('perfil_socio.html', usuario=usuario)
+        
+        elif classe_id == ObjectId("68c5d5307121e8f8f57359c9"):
+            # Renderiza o perfil para Infinity
+            return render_template('perfil_infinity.html', usuario=usuario)
+            
+        elif classe_id == ObjectId("68c5d5307121e8f8f57359ca"):
+            # Renderiza o perfil para Membro
+            return render_template('perfil_membro.html', usuario=usuario)
+            
+        else:
+            # Caso a classe não seja reconhecida, usa um template padrão
+            return render_template('perfil_padrao.html', usuario=usuario)
+
+    except Exception as e:
+        print(f"Erro ao buscar o perfil do usuário: {e}")
+        return "Ocorreu um erro ao carregar o perfil.", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
