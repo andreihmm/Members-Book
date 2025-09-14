@@ -140,14 +140,16 @@
 </head>
 
 <body>
+
     <header>
+        <a href="{{ url_for('busca') }}" class="back-button">← Voltar para a busca</a>
+
         <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
     </header>
     <div class="profile-container">
         {% block main_content %}
         {% endblock %}
     </div>
-    <a href="{{ url_for('busca') }}" class="back-button">← Voltar para a busca</a>
 </body>
 
 </html>

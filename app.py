@@ -73,6 +73,7 @@ def register():
         # 1. Pega todos os dados do formulário
         nome = request.form.get('nome')
         email = request.form.get('email')
+        password = request.form.get('password')
         data_nascimento_str = request.form.get('data_nascimento')
         empresa = request.form.get('empresa')
         
@@ -159,6 +160,7 @@ def register():
         documento_usuario = {
             "nome": nome,
             "email": email,
+            "password": password,
             "data_nascimento": data_nascimento,
             "empresa": empresa,
             "classe": classe_doc["_id"],
@@ -287,7 +289,6 @@ def membros():
 @app.route('/membro')
 def membro():
     return render_template('membro.html')
-
 # --- Rota para o Perfil do Usuário ---
 @app.route('/perfil/<user_id>')
 def perfil(user_id):
@@ -298,25 +299,32 @@ def perfil(user_id):
         if not usuario:
             return "Usuário não encontrado.", 404
         
-        # Agora, determine qual template renderizar com base na classe
-        # Supondo que o documento do usuário tenha um campo `classe_id`
+        # Obtém a classe_id do usuário
         classe_id = usuario.get('classe')
         
+        # Encontra o nome da classe usando a FK
+        classe_doc = classes.find_one({"_id": classe_id})
+        classe_nome = classe_doc.get('nome') if classe_doc else 'Não Definida'
+        
+        #
+        segmento_id = usuario.get('segmento')
+
+        # Encontra o nome do segmento usando a FK
+        segmento_doc = segmentos.find_one({"_id": segmento_id})
+        semento_nome = segmento_doc.get('nome') if segmento_doc else 'Não Definida'
+        
+        # Agora, determine qual template renderizar
         if classe_id == ObjectId("68c5d5307121e8f8f57359c8"):
-            # Renderiza o perfil para Sócio
-            return render_template('perfil_socio.html', usuario=usuario)
+            return render_template('perfil_socio.html', usuario=usuario, classe_nome=classe_nome, segmento_nome=semento_nome)
         
         elif classe_id == ObjectId("68c5d5307121e8f8f57359c9"):
-            # Renderiza o perfil para Infinity
-            return render_template('perfil_infinity.html', usuario=usuario)
+            return render_template('perfil_infinity.html', usuario=usuario, classe_nome=classe_nome, segmento_nome=semento_nome)
             
         elif classe_id == ObjectId("68c5d5307121e8f8f57359ca"):
-            # Renderiza o perfil para Membro
-            return render_template('perfil_membro.html', usuario=usuario)
+            return render_template('perfil_membro.html', usuario=usuario, classe_nome=classe_nome, segmento_nome=semento_nome)
             
         else:
-            # Caso a classe não seja reconhecida, usa um template padrão
-            return render_template('perfil_padrao.html', usuario=usuario)
+            return render_template('perfil_padrao.html', usuario=usuario, classe_nome=classe_nome, segmento_nome=semento_nome)
 
     except Exception as e:
         print(f"Erro ao buscar o perfil do usuário: {e}")

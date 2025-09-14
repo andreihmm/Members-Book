@@ -17,8 +17,8 @@
         {% if usuario.email %}<li><strong>Email:</strong> {{ usuario.email }}</li>{% endif %}
         {% if usuario.empresa %}<li><strong>Empresa:</strong> {{ usuario.empresa }}</li>{% endif %}
         {% if usuario.cargo %}<li><strong>Cargo:</strong> {{ usuario.cargo }}</li>{% endif %}
-        {% if usuario.segmento %}<li><strong>Segmento:</strong> {{ usuario.segmento }}</li>{% endif %}
-        {% if usuario.classe %}<li><strong>Classe:</strong> {{ usuario.classe | capitalize }}</li>{% endif %}
+        {% if usuario.segmento %}<li><strong>Segmento:</strong> {{ segmento_nome }}</li>{% endif %}
+        {% if usuario.classe %}<li><strong>Classe:</strong> {{ classe_nome }}</li>{% endif %}
         {% if usuario.data_entrada %}<li><strong>Desde:</strong> {{ usuario.data_entrada.strftime('%d/%m/%Y') }}</li>{%
         endif %}
     </ul>
