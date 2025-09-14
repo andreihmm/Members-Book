@@ -107,6 +107,12 @@
             width: 120px;
             /* tamanho da logo inferior */
         }
+
+        .error-message {
+            color: #FF6347;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 
@@ -116,10 +122,13 @@
     <div class="login-container">
         <img src="{{ url_for('static', filename='logo_members_book.png') }}" alt="Logo do Projeto">
         <form method="POST" action="/login">
-            <input type="text" name="username" placeholder="Usuário ou Email" required>
-            <input type="password" name="password" placeholder="Senha" required>
+            <input type="text" name="email" placeholder="Usuário ou Email" required>
+            <input type="password" name="senha" placeholder="Senha" required>
             <button type="submit">Entrar</button>
         </form>
+        {% if erro %}
+        <p class="error-message">{{ erro }}</p>
+        {% endif %}
         <div class="register-link">
             <a href="/register">Criar conta</a>
         </div>

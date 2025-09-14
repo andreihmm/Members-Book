@@ -130,21 +130,14 @@
         <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
     </div>
 
-    <img src="https://via.placeholder.com/150/e2b349/161b22?text=LA" alt="Foto de Lucas Andrade"
-        class="profile-picture">
+    <img src="{{ usuario.url_imagem }}" alt="Foto de Lucas Andrade" class="profile-picture">
 
-    <h2 class="profile-name">Lucas Andrade</h2>
-    <span class="profile-title">InovaTech Labs</span>
+    <h2 class="profile-name">{{ usuario.nome }}</h2>
+    <span class="profile-title">{{ usuario.empresa }}</span>
 
     <p class="profile-bio">
-        Lucas Andrade é fundador e CEO da InovaTech Labs, startup de inteligência artificial que desenvolve
-        soluções para automação de processos.
+        {{ usuario.descricao }}
     </p>
-    <p class="profile-bio">
-        É palestrante em eventos de tecnologia e mentor de jovens empreendedores. Sua missão é
-        democratizar o acesso à IA para empresas de todos os portes.
-    </p>
-
     <div class="social-icons">
         <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
         <a href="#" class="icon"><i class="fab fa-linkedin"></i></a>

@@ -33,6 +33,10 @@
         .register-container label {
             color: white;
             font-size: 1rem;
+            display: block;
+            /* Garante que a label ocupe a linha */
+            margin-bottom: 0.5rem;
+            /* Espaçamento abaixo da label */
         }
 
         h1 {
@@ -54,11 +58,9 @@
         .aviso-ia {
             font-size: 0.8em;
             color: #8b949e;
-            /* Uma cor cinza sutil */
             margin-top: 5px;
             text-align: left;
             max-width: 400px;
-            /* Para que o texto não se estenda muito */
         }
 
         input,
@@ -85,7 +87,7 @@
         }
 
         button:hover {
-            background: #3b3fa7;
+            background: #b38f29;
         }
 
         .buttons {
@@ -109,17 +111,15 @@
         }
 
         .progress .active {
-            background: #4e54c8;
+            background: #D4AF37;
         }
 
         .logo-top {
             width: 150px;
-            /* tamanho da logo superior */
         }
 
         .logo-bottom {
             width: 120px;
-            /* tamanho da logo inferior */
         }
 
         @keyframes fadeIn {
@@ -143,39 +143,35 @@
         <h1>Cadastro</h1>
         <form method="POST" action="/register" enctype="multipart/form-data">
 
-            <!-- Indicador de progresso -->
             <div class="progress">
                 <span class="dot active"></span>
                 <span class="dot"></span>
                 <span class="dot"></span>
             </div>
 
-            <!-- Etapa 1 -->
             <div class="step active">
-                <input type="text" name="nome" placeholder="Nome completo">
-                <input type="text" name="email" placeholder="E-mail">
-                <input type="password" name="password" placeholder="Password">
-                <label for="data_entrada">Data de nascimento</label>
-                <input type="date" name="data_nascimento" placeholder="Data de Nascimento" min="2000-01-01"
-                    max="2025-09-13">
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="password" name="password" placeholder="Senha" required>
+                <label for="data_nascimento">Data de nascimento</label>
+                <input type="date" id="data_nascimento" name="data_nascimento" required>
                 <div class="buttons">
                     <button type="button" onclick="nextStep()">Próximo</button>
                 </div>
             </div>
 
-            <!-- Etapa 2 -->
             <div class="step">
-                <input type="text" name="empresa" placeholder="Empresa">
-                <label>Classe:</label>
-                <select name="classe">
+                <input type="text" name="empresa" placeholder="Empresa" required>
+                <label for="classe">Classe:</label>
+                <select id="classe" name="classe" required>
                     <option value="">Selecione</option>
                     <option value="Sócio">Sócio</option>
                     <option value="Infinity">Infinity</option>
-                    <option value="Membros">Membro</option>
+                    <option value="Membro">Membro</option>
                 </select>
 
-                <label>Segmento:</label>
-                <select name="segmento">
+                <label for="segmento">Segmento:</label>
+                <select id="segmento" name="segmento" required>
                     <option value="">Selecione</option>
                     <option value="Advocacia">Advocacia</option>
                     <option value="Arquitetura">Arquitetura</option>
@@ -207,11 +203,14 @@
                 </div>
             </div>
 
-            <!-- Etapa 4 -->
             <div class="step">
-                <input type="text" name="cargo" placeholder="Cargo">
+                <input type="text" name="cargo" placeholder="Cargo" required>
                 <label for="data_entrada">Data de entrada na empresa</label>
-                <input type="date" id="data_entrada" name="data_entrada" min="2000-01-01" max="2025-09-13">
+                <input type="date" id="data_entrada" name="data_entrada" required>
+
+                <label for="foto_perfil">Foto de Perfil (opcional):</label>
+                <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+
                 <textarea name="diga_mais" placeholder="Diga mais sobre você..." rows="3"></textarea>
                 <p class="aviso-ia">
                     A sua descrição será enviada para uma inteligência artificial que irá padronizar o texto para o seu

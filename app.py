@@ -1,12 +1,29 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from groq import Groq
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import datetime
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
+import cloudinary
+import cloudinary.uploader
+
+# Configuração do Cloudinary (NOVA SEÇÃO)
+cloudinary.config(
+  cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+  api_key = os.getenv('CLOUDINARY_API_KEY'),
+  api_secret = os.getenv('CLOUDINARY_API_SECRET')
+)
 
 app = Flask(__name__)
+
+################
+
+app.secret_key = 'a_sua_chave_secreta_muito_longa_e_aleatoria'
+
+###################
+
 
 # Simulação de dados para a página de chats
 chats_mock = [
@@ -90,7 +107,25 @@ def register():
         data_entrada_str = request.form.get('data_entrada')
         diga_mais_raw = request.form.get('diga_mais')
         
+        url_imagem = "" # Define um valor padrão caso não haja imagem
+
+        foto = request.files.get('foto_perfil')
+
+        if foto and foto.filename != '':
+            try:
+                print(f"Enviando a imagem '{foto.filename}' para o Cloudinary...")
+                # Faz o upload do arquivo para o Cloudinary
+                upload_result = cloudinary.uploader.upload(foto)
+                # Pega a URL segura da imagem
+                url_imagem = upload_result.get('secure_url')
+                print(f"Upload bem-sucedido! URL: {url_imagem}")
+            except Exception as e:
+                print(f"Erro no upload para o Cloudinary: {e}")
+                # A url_imagem continuará como ""
+
         diga_mais_formatted = "" # Inicializa a variável
+
+
 
         prompt_content = (
             f"Você é um redator de perfis profissionais. Sua tarefa é transformar a auto-descrição de um usuário em um "
@@ -160,7 +195,7 @@ def register():
         documento_usuario = {
             "nome": nome,
             "email": email,
-            "password": password,
+            "senha": password,
             "data_nascimento": data_nascimento,
             "empresa": empresa,
             "classe": classe_doc["_id"],
@@ -168,6 +203,7 @@ def register():
             "cargo": cargo,
             "data_entrada": data_entrada,
             "descricao": diga_mais_formatted,  # Salva o texto formatado
+            "url_imagem": url_imagem
         }
         
         # 4. Insere o documento no MongoDB
@@ -201,9 +237,52 @@ def register():
 def index():
     return render_template('splash.html')
 
-@app.route('/login')
+
+# No seu arquivo app.py
+
+# No seu arquivo app.py
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    print("\n--- INÍCIO DA ROTA DE LOGIN ---")
+    
+    if request.method == 'POST':
+        print("Método da requisição: POST")
+        
+        email = request.form.get('email')
+        senha = request.form.get('senha')
+        
+        print(f"Dados recebidos do formulário -> Email: {email}, Senha: {senha}")
+        
+        usuario = usuarios_collection.find_one({'email': email})
+        
+        # Este print é crucial. Ele mostra se a busca encontrou um usuário ou não.
+        print(f"Resultado da busca no banco de dados: {usuario}")
+
+        if usuario:
+            print("Usuário encontrado no banco de dados. Verificando a senha...")
+            
+            if usuario['senha'] == senha:
+                print("Verificação de senha: SUCESSO. Redirecionando...")
+                session['user_id'] = str(usuario['_id'])
+                return redirect(url_for('home'))
+            else:
+                print("Verificação de senha: FALHOU. Senha incorreta.")
+                return render_template('login.html', erro="Email ou senha inválidos.")
+        else:
+            print("Usuário NÃO encontrado no banco de dados.")
+            return render_template('login.html', erro="Email ou senha inválidos.")
+
+    else: # Método é 'GET'
+        print("Método da requisição: GET. Renderizando a página de login.")
+        
+    print("--- FIM DA ROTA DE LOGIN ---\n")
+    return render_template('login.html', erro=None)
+
+
+
+
+
 
 @app.route('/splash')
 def splash():
@@ -278,9 +357,26 @@ def conversation(user_id):
         # Retorna uma mensagem de erro ou redireciona
         return "Usuário não encontrado.", 404
 
+
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    # Verifica se o usuário está logado (se o user_id existe na sessão)
+    if 'user_id' in session:
+        user_id = session['user_id']
+        
+        # Encontra o usuário no banco de dados usando o ID da sessão
+        usuario_logado = usuarios_collection.find_one({"_id": ObjectId(user_id)})
+        
+        if usuario_logado:
+            # Renderiza a página home com as informações do usuário
+            return render_template('home.html', usuario=usuario_logado)
+        else:
+            # Caso o usuário não seja encontrado, redireciona para o login
+            return redirect(url_for('login'))
+    else:
+        # Se não há usuário na sessão, redireciona para a página de login
+        return redirect(url_for('login'))
+
 
 @app.route('/membros')
 def membros():
@@ -289,6 +385,9 @@ def membros():
 @app.route('/membro')
 def membro():
     return render_template('membro.html')
+
+
+
 # --- Rota para o Perfil do Usuário ---
 @app.route('/perfil/<user_id>')
 def perfil(user_id):
