@@ -75,8 +75,16 @@ def register():
         email = request.form.get('email')
         data_nascimento_str = request.form.get('data_nascimento')
         empresa = request.form.get('empresa')
-        classe = request.form.get('classe')
-        segmento = request.form.get('segmento')
+        
+        ############
+        classe_do_form = request.form.get('classe')
+        classe_capitalizada = classe_do_form.capitalize()
+        #########
+
+        ###########
+        segmento_do_form = request.form.get('segmento')
+        #######
+
         cargo = request.form.get('cargo')
         data_entrada_str = request.form.get('data_entrada')
         diga_mais_raw = request.form.get('diga_mais')
@@ -125,13 +133,36 @@ def register():
         if data_nascimento_str:
             data_nascimento = datetime.datetime.strptime(data_nascimento_str, '%Y-%m-%d')
             
+
+        classe_doc = classes.find_one({"nome": classe_capitalizada})
+
+        if classe_doc:
+            # Se encontrou, atribui o _id do documento ao novo_usuario
+            print(f"Atenção: A classe '{classe_capitalizada}' foi encontrada na base de dados.")
+        else:
+            # Se não encontrou (a busca retornou None), você pode lidar com isso
+            # Por exemplo, atribuir uma classe padrão ou registrar o erro
+            print(f"Atenção: A classe '{classe_capitalizada}' não foi encontrada na base de dados. O perfil será criado sem uma classe específica.")
+            # Você pode optar por deixar o campo de classe vazio ou com um valor padrão
+        
+        segmento_doc = segmentos.find_one({"nome": segmento_do_form})
+
+        if segmento_doc:
+            # Se encontrou, atribui o _id do documento ao novo_usuario
+            print(f"Atenção: O segmento '{segmento_doc}' foi encontrada na base de dados.")
+        else:
+            # Se não encontrou (a busca retornou None), você pode lidar com isso
+            # Por exemplo, atribuir uma classe padrão ou registrar o erro
+            print(f"Atenção: O segmento '{segmento_doc}' não foi encontrada na base de dados. O perfil será criado sem uma classe específica.")
+            # Você pode optar por deixar o campo de classe vazio ou com um valor padrão
+
         documento_usuario = {
             "nome": nome,
             "email": email,
             "data_nascimento": data_nascimento,
             "empresa": empresa,
-            "classe": classe,
-            "segmento": segmento,
+            "classe": classe_doc["_id"],
+            "segmento": segmento_doc["_id"],
             "cargo": cargo,
             "data_entrada": data_entrada,
             "descricao": diga_mais_formatted,  # Salva o texto formatado
@@ -149,18 +180,17 @@ def register():
             print(f"Erro ao salvar no MongoDB: {e}")
             return "Ocorreu um erro ao salvar os dados. Tente novamente mais tarde."
 
-        # --- DEBUG AQUI! ---
-        # Imprime o texto original e o texto formatado no console do terminal
-        print("\n--- INFORMAÇÕES DO FORMULÁRIO ---")
-        print(f"Texto Original (diga_mais_raw):\n{diga_mais_raw}\n")
-        print("---")
-        print(f"Texto Formatado (diga_mais_formatted):\n{diga_mais_formatted}\n")
-        print("----------------------------------\n")
-        # -------------------
+        # # --- DEBUG AQUI! ---
+        # # Imprime o texto original e o texto formatado no console do terminal
+        # print("\n--- INFORMAÇÕES DO FORMULÁRIO ---")
+        # print(f"Texto Original (diga_mais_raw):\n{diga_mais_raw}\n")
+        # print("---")
+        # print(f"Texto Formatado (diga_mais_formatted):\n{diga_mais_formatted}\n")
+        # print("----------------------------------\n")
+        # # -------------------
 
-        # A sua lógica de salvar no banco de dados ficaria aqui
 
-        return f"Registro em modo de debug. Verifique o console do terminal para ver a mensagem formatada."
+        # return f"Registro em modo de debug. Verifique o console do terminal para ver a mensagem formatada."
 
 
     return render_template('register.html')

@@ -51,6 +51,16 @@
             display: block;
         }
 
+        .aviso-ia {
+            font-size: 0.8em;
+            color: #8b949e;
+            /* Uma cor cinza sutil */
+            margin-top: 5px;
+            text-align: left;
+            max-width: 400px;
+            /* Para que o texto não se estenda muito */
+        }
+
         input,
         select,
         textarea {
@@ -144,6 +154,7 @@
             <div class="step active">
                 <input type="text" name="nome" placeholder="Nome completo">
                 <input type="text" name="email" placeholder="E-mail">
+                <label for="data_entrada">Data de nascimento</label>
                 <input type="date" name="data_nascimento" placeholder="Data de Nascimento" min="2000-01-01"
                     max="2025-09-13">
                 <div class="buttons">
@@ -157,10 +168,38 @@
                 <label>Classe:</label>
                 <select name="classe">
                     <option value="">Selecione</option>
-                    <option value="socio">Sócio</option>
-                    <option value="infinity">Infinity</option>
-                    <option value="membro">Membro</option>
-                </select> <input type="text" name="segmento" placeholder="Segmento">
+                    <option value="Sócio">Sócio</option>
+                    <option value="Infinity">Infinity</option>
+                    <option value="Membros">Membro</option>
+                </select>
+
+                <label>Segmento:</label>
+                <select name="segmento">
+                    <option value="">Selecione</option>
+                    <option value="Advocacia">Advocacia</option>
+                    <option value="Arquitetura">Arquitetura</option>
+                    <option value="Comércio">Comércio</option>
+                    <option value="Comex">Comex</option>
+                    <option value="Construtora">Construtora & Incorporadora</option>
+                    <option value="Consultoria">Consultoria</option>
+                    <option value="Contábil">Contábil</option>
+                    <option value="Educação">Educação</option>
+                    <option value="Engenharia">Engenharia</option>
+                    <option value="Eventos & Produções">Eventos & Produções</option>
+                    <option value="Finanças & Investimentos">Finanças & Investimentos</option>
+                    <option value="Food">Food</option>
+                    <option value="Franquias">Franquias</option>
+                    <option value="Imobiliário">Imobiliário</option>
+                    <option value="Licitação">Licitação</option>
+                    <option value="Logística">Logística & Transporte</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Recursos humanos">Recursos Humanos</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Seguros">Seguros</option>
+                    <option value="Tecnologia">Tecnologia</option>
+                    <option value="Veículos">Veículos</option>
+                </select>
+
                 <div class="buttons">
                     <button type="button" onclick="prevStep()">Voltar</button>
                     <button type="button" onclick="nextStep()">Próximo</button>
@@ -173,6 +212,10 @@
                 <label for="data_entrada">Data de entrada na empresa</label>
                 <input type="date" id="data_entrada" name="data_entrada" min="2000-01-01" max="2025-09-13">
                 <textarea name="diga_mais" placeholder="Diga mais sobre você..." rows="3"></textarea>
+                <p class="aviso-ia">
+                    A sua descrição será enviada para uma inteligência artificial que irá padronizar o texto para o seu
+                    perfil.
+                </p>
                 <div class="buttons">
                     <button type="button" onclick="prevStep()">Voltar</button>
                     <button type="submit">Finalizar</button>
