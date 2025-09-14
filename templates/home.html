@@ -1,109 +1,159 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+{% block title %}Perfil{% endblock %}
 
-        body {
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem;
-        }
+{% block head %}
+<style>
+    .content {
+        padding: 20px;
 
-        header {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
+    }
 
-        header img {
-            width: 60px;
-            margin-right: 1rem;
-        }
+    /* Fundo gradiente */
+    body {
+        background: linear-gradient(151deg, #030e23 0%, #2a3c58 100%);
+        background-attachment: fixed;
+        /* Mantém o gradiente fixo ao rolar */
+    }
 
-        header h1 {
-            color: white;
-            font-size: 1.5rem;
-        }
+    /* Estilo do conteúdo principal */
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 20px;
+    }
 
-        .card {
-            background: white;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+    .logo-top {
+        width: 150px;
+        max-width: 200px;
+        margin: 1rem 0;
+        /* tamanho da logo superior */
+    }
 
-        .card h2 {
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
+    /* Estilo do cabeçalho */
+    .profile-header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
 
-        .card p {
-            color: #666;
-            font-size: 0.95rem;
-        }
+    .profile-header .back-arrow {
+        font-size: 1.5em;
+        margin-right: 20px;
+        color: #f0f6fc;
+        position: absolute;
+        left: 7%;
+    }
 
-        .button-group {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
+    .profile-header .title {
+        font-size: 1.5em;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #f0f6fc;
+    }
 
-        .button-group a {
-            display: block;
-            text-align: center;
-            padding: 0.8rem;
-            background: #4e54c8;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
+    /* Imagem de perfil */
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #e2b349;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
 
-        .button-group a:hover {
-            background: #3b3fa7;
-        }
-    </style>
-</head>
+    /* Nome e título */
+    .profile-name {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #f0f6fc;
+        margin-bottom: 5px;
+    }
 
-<body>
-    <header>
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-        <h1>Bem-vindo!</h1>
-    </header>
+    .profile-title {
+        font-size: 1.1em;
+        font-weight: 400;
+        color: #e2b349;
+        margin-bottom: 25px;
+    }
 
-    <div class="card">
-        <h2>Andrei Alves</h2>
-        <p>Email: exemplo@email.com</p>
-        <p>Usuário desde: 2025</p>
+    /* Blocos de texto da biografia */
+    .profile-bio {
+        color: #c9d1d9;
+        font-size: 1em;
+        line-height: 1.6;
+        padding: 0 10px;
+    }
+
+    /* Ícones sociais */
+    .social-icons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        max-width: 200px;
+        margin: 40px 0;
+    }
+
+    .social-icons .icon {
+        font-size: 2.2em;
+        color: #c9d1d9;
+        transition: color 0.2s;
+    }
+
+    .social-icons .icon:hover {
+        color: #e2b349;
+    }
+
+    /* Logo SÓCIOS */
+    .socios-logo-container {
+        margin-top: auto;
+        /* Empurra o logo para o final do contêiner */
+        padding-bottom: 30px;
+    }
+
+    .socios-logo {
+        max-width: 150px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <a href="/busca" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
+        <img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
     </div>
 
-    <div class="button-group">
-        <a href="/profile">Perfil</a>
-        <a href="/settings">Configurações</a>
-        <a href="/logout">Sair</a>
-    </div>
-</body>
+    <img src="https://via.placeholder.com/150/e2b349/161b22?text=LA" alt="Foto de Lucas Andrade"
+        class="profile-picture">
 
-</html>
+    <h2 class="profile-name">Lucas Andrade</h2>
+    <span class="profile-title">InovaTech Labs</span>
+
+    <p class="profile-bio">
+        Lucas Andrade é fundador e CEO da InovaTech Labs, startup de inteligência artificial que desenvolve
+        soluções para automação de processos.
+    </p>
+    <p class="profile-bio">
+        É palestrante em eventos de tecnologia e mentor de jovens empreendedores. Sua missão é
+        democratizar o acesso à IA para empresas de todos os portes.
+    </p>
+
+    <div class="social-icons">
+        <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="icon"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="icon"><i class="fas fa-comment"></i></a>
+    </div>
+
+    <div class="socios-logo-container">
+        <img src="static/logo_socios.png" alt="Logo Sócios" class="socios-logo">
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .content {
+        padding: 20px;
+
+    }
+
+    /* Estilos da barra de busca */
+
+    .logo-top {
+        width: 150px;
+        /* tamanho da logo superior */
+    }
+
+    .filters {
+        display: flex;
+        /* Alinha os itens em uma linha */
+        justify-content: space-between;
+        /* Distribui o espaço entre os botões */
+        gap: 10px;
+        /* Adiciona um pequeno espaço entre os botões */
+        margin: 20px;
+        /* Adiciona um espaço abaixo da div de filtros */
+    }
+
+    .filter-button {
+        flex: 1;
+        /* Faz com que os botões ocupem o mesmo espaço */
+        background-color: #e2b349;
+        color: black;
+        /* A cor dourada dos ícones e texto */
+        border: none;
+        padding: 15px 10px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        /* Centraliza verticalmente o ícone e o texto */
+        justify-content: space-between;
+        /* Coloca o ícone de seta na direita */
+        font-size: 1.1em;
+        cursor: pointer;
+        /* Muda o cursor para indicar que é clicável */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+        transition: background-color 0.2s;
+        /* Adiciona uma transição suave para o efeito hover */
+    }
+
+    .filter-button:hover {
+        background-color: #333a45;
+        /* Escurece o fundo ao passar o mouse */
+    }
+
+    .filter-button i {
+        color: black;
+        /* Cor do ícone */
+    }
+
+    .filter-button span {
+        margin: 0 5px;
+        /* Adiciona um pequeno espaço entre o ícone e o texto */
+    }
+
+    .search-bar {
+        display: flex;
+        margin-bottom: 20px;
+        background-color: #161b22;
+        border-radius: 8px;
+        padding: 5px;
+    }
+
+    .search-bar input {
+        border-radius: 10px;
+    }
+
+    .search-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 10px 15px;
+        color: #f0f6fc;
+        font-size: 1em;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #8b949e;
+    }
+
+    .search-button {
+        background-color: #e2b349;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #161b22;
+    }
+
+    /* Estilos dos cards de usuário */
+    .cards-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .user-card {
+        background-color: #161b22;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+    }
+
+    .user-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+        border: 2px solid #e2b349;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-name {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #e2b349;
+    }
+
+    .card-description {
+        font-size: 0.9em;
+        color: #c9d1d9;
+        margin-top: 5px;
+    }
+
+    .no-results {
+        text-align: center;
+        color: #8b949e;
+        margin-top: 40px;
+    }
+</style>
+
+
+{% endblock %}
+
+{% block title %}Busca{% endblock %}
+
+{% block content %}
+<img class="logo-top" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Comunidade Disruption">
+
+<div class="filters">
+    <button class="filter-button">
+        <i class="fas fa-list"></i>
+        <span>Classe</span>
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <button class="filter-button">
+        <i class="fas fa-list"></i>
+        <span>Segmento</span>
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+<div class="search-bar">
+    <input type="text" placeholder="Buscar...">
+    <button type="submit" class="search-button">
+        <i class="fas fa-search"></i>
+    </button>
+</div>
+
+<main class="cards-list">
+    {% for usuario in usuarios %}
+    <div class="user-card">
+        <img src="{{ usuario.foto_url }}" alt="Foto de Perfil de {{ usuario.nome }}" class="card-photo">
+        <div class="card-info">
+            <span class="card-name">{{ usuario.nome }}</span>
+            <span class="card-description">{{ usuario.descricao }}</span>
+        </div>
+    </div>
+    {% else %}
+    <p class="no-results">Nenhum resultado encontrado.</p>
+    {% endfor %}
+</main>
+{% endblock %}

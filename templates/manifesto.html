@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifesto</title>
+    <style>
+        /* Reset simples */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #0A192F;
+            justify-content: space-evenly;
+        }
+
+        .logo-top {
+            width: 150px;
+            max-width: 200px;
+            margin: 1rem 0;
+            /* tamanho da logo superior */
+        }
+
+        .content {
+            padding: 1rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .content img {
+            width: 100px;
+            margin-bottom: 1rem;
+            width: 90%;
+        }
+
+        h2 {
+            font-size: 0.9rem;
+            color: white;
+            margin: 10px;
+        }
+
+        p {
+            color: white;
+
+        }
+
+        #resumo {
+            border: 2px solid white;
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* “abre” a parte central de cima */
+        #resumo::before {
+            position: absolute;
+            top: -2px;
+            /* mesmo valor da espessura da borda */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            /* largura da parte vazia */
+            height: 2px;
+            /* mesma espessura da borda */
+            background: #0A192F;
+            /* mesma cor do fundo da página */
+        }
+
+        .icon-wrapper {
+            position: absolute;
+            top: -20px;
+            /* sobe o ícone para “entrar” na borda */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0A192F;
+            /* mesma cor do fundo da div */
+            padding: 5px;
+            /* deixa um espacinho entre ícone e borda */
+            border-radius: 50%;
+        }
+
+        .icon-wrapper svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #D4AF37;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #3b3fa7;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #D4AF37;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+
+        .logo-bottom {
+            width: 120px;
+            /* tamanho da logo inferior */
+        }
+    </style>
+</head>
+
+<body>
+    <img class="logo-top" src="{{ url_for('static', filename='logo_members_book.png') }}" alt="Comunidade Disruption">
+
+    <div class="content">
+        <h2>NOSSO MANIFESTO</h2>
+        <p>Somos a Comunidade Disruption: empresários que rompem padrões, evoluem sempre e geram valor juntos.</p>
+        <div id="resumo">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path
+                        d="M20.285 6.708a1 1 0 0 0-1.54-1.295L9 15.158 5.255 11.4a1 1 0 0 0-1.51 1.324l4 4.453a1 1 0 0 0 1.485.038l10.055-10.507z"
+                        fill="#D4AF37" />
+                </svg>
+            </div>
+            <p>Este Members Book é o mapa vivo da comunidade: apresenta os membros ativos, facilita conexões
+                estratégicas e fortalece redes de negócios. Aqui você encontra pessoas prontas para gerar valor,
+                compartilhar experiências e acelerar quem já faz a diferença.</p>
+        </div>
+
+        <h2>Juntos, somos Enjoy.</h2>
+
+
+        <button type="button">Continuar</button>
+
+    </div>
+    <img class="logo-bottom" src="{{ url_for('static', filename='logo_disruption.png') }}" alt="Enjoy">
+
+</body>
+
+</html>

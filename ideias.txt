@@ -1,0 +1,1 @@
+ampliar card na lista de membros, abrindo a descrição. depois, apertar botão para acessar perfil completo.

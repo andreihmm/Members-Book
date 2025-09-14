@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversa{% endblock %}
+
+{% block head %}
+<style>
+    .content {
+        overflow-x: hidden;
+    }
+
+    /* Estilos da página de conversa */
+    .conversation-header {
+        display: flex;
+        align-items: center;
+        background-color: #161b22;
+        padding: 15px;
+        border-bottom: 1px solid #2d333b;
+        width: 100%;
+    }
+
+    .conversation-header .back-arrow {
+        font-size: 1.5em;
+        margin-right: 15px;
+        margin-left: 15px;
+        color: #f0f6fc;
+        text-decoration: none;
+    }
+
+    .conversation-header .chat-photo {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .conversation-header .chat-name {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #e2b349;
+    }
+
+    .messages-container {
+        flex-grow: 1;
+        /* Ocupa o espaço disponível */
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .message {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-bubble {
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 80%;
+    }
+
+    .message.sent .message-bubble {
+        background-color: #e2b349;
+        color: #161b22;
+        align-self: flex-end;
+    }
+
+    .message.received .message-bubble {
+        background-color: #2d333b;
+        color: #c9d1d9;
+        align-self: flex-start;
+    }
+
+    .input-container {
+        display: flex;
+        padding: 10px;
+        background-color: #161b22;
+        border-top: 1px solid #2d333b;
+        width: 100%;
+    }
+
+    .message-input {
+        flex: 1;
+        background-color: #2d333b;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 20px;
+        color: #f0f6fc;
+        outline: none;
+    }
+
+    .send-button {
+        background-color: #e2b349;
+        border: none;
+        color: #161b22;
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="conversation-header">
+    <a href="{{ url_for('chat') }}" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
+    <img src="{{ usuario.foto_url }}" alt="Foto de {{ usuario.nome }}" class="chat-photo">
+    <span class="chat-name">{{ usuario.nome }}</span>
+</div>
+
+<div class="messages-container">
+    {% for mensagem in mensagens %}
+    <div class="message {% if mensagem.remetente == 'eu' %}sent{% else %}received{% endif %}">
+        <div class="message-bubble">
+            {{ mensagem.texto }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="input-container">
+    <input type="text" placeholder="Escreva uma mensagem..." class="message-input">
+    <button class="send-button">
+        <i class="fas fa-paper-plane"></i>
+    </button>
+</div>
+{% endblock %}
